@@ -35,14 +35,35 @@ const POSTS = [
 export default function PostListScreen({ navigation }: Props) {
   function renderItem({ item }: { item: (typeof POSTS)[number] }) {
     return (
-      <>
-        {/* Replace this with your code here for each item to render (Use Pressable Component) */}
-      </>
-    );
+  <Pressable
+    style={({ pressed }) => [styles.item, pressed && styles.itemPressed]}
+    onPress={() =>
+      navigation.navigate("PostDetail", {
+        postId: item.id,
+        title: item.title,
+        content: item.content,
+      })
+    }
+  >
+    <Text style={{ fontSize: 16, fontWeight: "600", marginBottom: 6 }}>
+      {item.title}
+    </Text>
+    <Text numberOfLines={2} style={{ color: "#555" }}>
+      {item.content}
+    </Text>
+  </Pressable>
+);
+
   }
 
   return (
     <View style={styles.container}>
+      <FlatList
+    data={POSTS}
+    keyExtractor={(it) => it.id}
+    renderItem={renderItem}
+    contentContainerStyle={styles.list}
+  />
       {/* Replace this with your code to render the list of items */}
     </View>
   );
